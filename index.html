@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>MTHD의 오늘의 음식 ! 가챠 뽑기</title>
+  <title>MTHD의 오늘의 메뉴 추천!</title>
   <style>
     html, body {
       min-height: 100vh;
@@ -17,7 +17,18 @@
       width: 100vw; min-width: 320px;
       display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     }
-    h1 {margin-top: 24px; margin-bottom: 7px; font-size: 2em; color: #a42553; letter-spacing: 3px; font-weight: 800;}
+    h1 {
+      margin: 32px 0 14px 0;
+      font-size: 3.1em;
+      color: #940059;
+      letter-spacing: 2.5px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.13;
+      text-shadow: 0 5px 25px #f8b1f74f, 0 2px 6px #c098bb3a;
+      word-break: keep-all;
+      user-select: none;
+    }
     .setting {
       width: 340px; max-width: 96vw;
       background: #fff8;
@@ -27,7 +38,7 @@
       display: flex; flex-direction: column; align-items: stretch; gap: 12px;
     }
     .setting label {
-      font-size: 1em; color: #823469; font-weight: bold;
+      font-size: 1.08em; color: #823469; font-weight: bold;
       margin-bottom: 7px;
       letter-spacing: 1.4px;
     }
@@ -41,12 +52,12 @@
     }
     .setting button {
       align-self: flex-end;
-      font-size: 1.07em; color: #fff;
+      font-size: 1.09em; color: #fff;
       background: linear-gradient(90deg, #df65a5 70%, #a06be1 100%);
       border: none; border-radius: 7px; padding: 7px 18px 6px 18px;
       font-weight: bold; cursor: pointer; margin-top: 6px;
       box-shadow: 0 3px 12px #efb5c533;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
       transition: background .15s;
     }
     .setting button:active {background: linear-gradient(90deg, #b14389 70%, #544ba9 100%);}
@@ -88,22 +99,17 @@
     @keyframes leverAnime{0%{transform:translateX(-50%) rotate(0);}15%{transform:translateX(-50%) rotate(-35deg);}53%{transform:translateX(-50%) rotate(50deg);}100%{transform:translateX(-50%) rotate(0);}}
     .lever-dot{width:36px;height:36px;background:radial-gradient(circle at 75% 22%,#f25 70%,#8b1 100%);border-radius:50%;border:2px solid #ab2828;box-shadow:0 1px 6px #e8939b;}
     .gacha-door{position:absolute;left:72%;bottom:12px;width:44px;height:38px;background:linear-gradient(140deg,#fff 80%,#eee 95%);border:2.5px solid #acacac;border-radius:11px 12px 7px 12px/15px 25px 24px 17px;box-shadow:0 0 8px #bbb6;z-index:30;}
-    
-    /* --- 굴러나오는 캡슐 --- */
     .roll-capsule {
-      --ball1: #ffadad;
-      --ball2: #ffd6a5;
+      --ball1: #ffadad; --ball2: #ffd6a5;
       position: absolute; left: 73.7%; bottom: 105px;
-      width: 50px; height      : 50px;
-      z-index: 200;
-      pointer-events: none;
-      border-radius: 50%;
-      background: radial-gradient(circle at 14px 12px, var(--ball1), var(--ball2));
+      width: 50px; height: 50px; z-index: 200; pointer-events: none;
+      border-radius: 50%; background: radial-gradient: 50px;
       border: 3px solid #ae93b7;
       box-shadow: 0 2px 10px #e4568348;
       opacity: 0;
       display: flex;
       align-items: center; justify-content: center;
+      transition: none;
     }
     .roll-capsule.rolling {
       opacity: 1;
@@ -122,7 +128,6 @@
       0% { left: 73.7%; bottom: 105px; width: 50px; height: 50px;}
       100% { left: 50%; bottom: 55%; width: 140px; height: 140px; transform: translate(-50%,50%) rotate(0);}
     }
-
     .capsule-hinge {
       width: 100%; height: 100%;
       position: absolute; left: 0; top: 0;
@@ -197,7 +202,6 @@
       65% { opacity: 1; scale: 1.45;}
       100% { opacity: 1; scale: 1.12;}
     }
-    /* 컨페티 */
     .confetti {
       position: absolute;
       width: 12px; height: 22px;
@@ -211,10 +215,26 @@
       .gacha-area {height: 55vw;min-height:340px;}
       .gacha-machine { width:99vw; min-width:0; }
     }
+    /* 하단 BANDAI */
+    .bandai {
+      position: fixed;
+      right: 12px; bottom: 8px;
+      font-family: 'Arial Black', Arial, sans-serif;
+      color: #fff; background: #cf234a;
+      padding: 3px 19px 3px 16px;
+      border-radius: 15px 9px 15px 20px/20px;
+      font-size: 1.14em;
+      letter-spacing: 0.19em;
+      z-index: 10000;
+      box-shadow: 0 4px 18px #a8333a2a;
+      opacity: 0.93;
+      font-weight: 900;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
-  <h1>가챠 뽑기</h1>
+  <h1>MTHD의<br>오늘의 메뉴 추천 !</h1>
   <div class="setting">
     <label for="itemlist">뽑기 리스트 (한 줄에 하나씩 입력):</label>
     <textarea id="itemlist" placeholder="예시&#10;쌀국수&#10;짬뽕&짜장"></textarea>
@@ -245,8 +265,8 @@
     <!-- 결과 텍스트 -->
     <div class="result-label" id="resultLabel"></div>
     <div class="pang-pop" id="pangPop">팡!</div>
-    <!-- 컨페티는 JS로 자동 추가/제거 -->
   </div>
+  <div class="bandai">BANDAI</div>
   <script>
     // --- 저장/불러오기 ---
     const STORAGE_KEY = "__gacha_items_v2__";
@@ -276,7 +296,6 @@
     let isRolling = false;
 
     function confettiBurst(centerX, centerY) {
-      // centerX, centerY : px 단위, 화면상의 중앙 기준 위치
       const colors = [
         "#fff275","#ff6150","#6469f9","#3ad29f","#fec0fa",
         "#a1f7ff","#feaeae","#5bf45b","#ffdca6","#c17aff"
@@ -292,12 +311,10 @@
         conf.style.left = (centerX-6) + "px";
         conf.style.top = (centerY-12) + "px";
         conf.style.transform = `rotate(${Math.random()*360}deg) scale(${s})`;
-        // 애니메이션
         conf.animate([
           { 
             opacity: 0.93,
-            transform: 
-              `translate(0,0) scale(${s}) rotate(${Math.random()*360}deg)`,
+            transform: `translate(0,0) scale(${s}) rotate(${Math.random()*360}deg)`,
           },
           { 
             opacity: 1,
@@ -305,13 +322,11 @@
           },
           {
             opacity: 0.85,
-            transform: 
-              `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(${s}) rotate(${Math.random()<.5?240:390}deg)`
+            transform: `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(${s}) rotate(${Math.random()<.5?240:390}deg)`
           },
           {
             opacity: 0,
-            transform: 
-              `translate(${Math.cos(angle)*dist*1.25}px,${Math.sin(angle)*dist*1.15}px) scale(${s}) rotate(${Math.random()<.5?210:540}deg)`
+            transform: `translate(${Math.cos(angle)*dist*1.25}px,${Math.sin(angle)*dist*1.15}px) scale(${s}) rotate(${Math.random()<.5?210:540}deg)`
           }
         ],{
           duration: 820 + Math.random()*580,
@@ -321,7 +336,6 @@
         gachaArea.appendChild(conf);
         confs.push(conf);
       }
-      // 2초 후 제거
       setTimeout(() => confs.forEach(c=>c.remove()), 2200);
     }
 
@@ -334,12 +348,10 @@
         return;
       }
       isRolling = true;
-
-      // 1. 레버 스핀
       lever.classList.add('lever-spin');
       setTimeout(() => lever.classList.remove('lever-spin'), 700);
 
-      // 2. 기존 효과 제거(숨김)
+      // 기존 효과 제거(숨김)
       rollCapsule.style.display = "none";
       rollCapsule.className = "roll-capsule";
       capTop.className = "cap-top";
@@ -347,7 +359,7 @@
       resultLabel.classList.remove("visible");
       pangPop.classList.remove("visible");
 
-      // 3. 뽑힐 항목 + 랜덤 캡슐 컬러 선정
+      // 뽑힐 항목 + 랜덤 캡슐 컬러 선정
       const idx = Math.floor(Math.random() * items.length);
       const resultTxt = items[idx];
       let ballcolors = [
@@ -357,17 +369,17 @@
       ];
       let bc = ballcolors[Math.floor(Math.random()*ballcolors.length)];
 
-      // 4. 굴러나오는 캡슐 준비
+      // 굴러나오는 캡슐 준비
       rollCapsule.style.setProperty('--ball1', bc[0]);
       rollCapsule.style.setProperty('--ball2', bc[1]);
       rollCapsule.style.display = "flex";
-      // 5. 굴러오기 애니메이션
+      // 굴러오기 애니메이션
       setTimeout(()=>{
         rollCapsule.className = "roll-capsule rolling";
-        // 6. 출구로 도착 후 중앙 큰 캡슐로 변신
+        // 출구로 도착 후 중앙 큰 캡슐로 변신
         setTimeout(()=>{
           rollCapsule.className += " toward-center";
-          // 7. 중앙에서 열리며 결과 팡! 컨페티
+          // 중앙에서 열리며 결과 팡! 컨페티
           setTimeout(()=>{
             rollCapsule.className += " open";
             capTop.classList.add('open');
