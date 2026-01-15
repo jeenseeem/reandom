@@ -77,7 +77,7 @@
       left: 50%; top: 0; transform: translateX(-50%);
       width: 340px; height: 520px;
       z-index: 10;
-      pointer-events: none;
+      /* 여기에서 pointer-events를 적용하지 마세요!! */
       user-select: none;
     }
     .gacha-body{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:270px;height:170px;background:linear-gradient(0deg,#d82d47 60%,#a11836 100%);border:6px solid #c2c2c2;border-radius:15px 15px 30px 30px/25px 25px 25px 38px;box-shadow:0 10px 30px #d3567355;z-index:2;}
@@ -92,11 +92,21 @@
     .capsule:nth-child(7){--cap1:#fdc;--cap2:#fac;}
     .capsule:nth-child(8){--cap1:#acf;--cap2:#bfe;}
     .capsule:nth-child(9){--cap1:#f8f;--cap2:#c8f;}
-    .gacha-lever{position:absolute;left:50%;bottom:115px;transform:translateX(-50%);z-index:15;width:60px;height:60px;border-radius:50%;background:linear-gradient(160deg,#eee,#bbb 70%);border:3.2px solid #888;box-shadow:0 4px 10px #ad2d5319;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow .12s;}
-    .gacha-lever:active,.lever-spin{box-shadow:0 2px 24px #83005a90;animation:leverAnime .69s cubic-bezier(.61,2,.27,1) 1;}
-    @keyframes leverAnime{0%{transform:translateX(-50%) rotate(0);}15%{transform:translateX(-50%) rotate(-35deg);}53%{transform:translateX(-50%) rotate(50deg);}100%{transform:translateX(-50%) rotate(0);}}
-    .lever-dot{width:36px;height:36px;background:radial-gradient(circle at 75% 22%,#f25 70%,#8b1 100%);border-radius:50%;border:2px solid #ab2828;box-shadow:0 1px 6px #e8939b;}
-    .gacha-door{position:absolute;left:72%;bottom:12px;width:44px;height:38px;background:linear-gradient(140deg,#fff 80%,#eee 95%);border:2.5px solid #acacac;border-radius:11px 12px 7px 12px/15px 25px 24px 17px;box-shadow:0 0 8px #bbb6;z-index:30;}
+    .gacha-lever {
+      position: absolute;
+      left: 50%; bottom: 115px;
+      transform: translateX(-50%);
+      z-index: 15;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(160deg,#eee,#bbb 70%);
+      border: 3.2px solid #888;
+      box-shadow: 0 4px 10px #ad2d5319;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: box-shadow .12s;
+      /* pointer-events: auto !important; << 명시적으로 커서, 클릭 해제/허용 */
+    }
     .roll-capsule {
       --ball1: #ffadad; --ball2: #ffd6a5;
       position: absolute; left: 73.7%; bottom: 105px;
@@ -229,176 +239,177 @@
       user-select: none;
     }
   </style>
-  <body>
-    <h1>MTHD의<br>오늘의 메뉴 추천 !</h1>
-    <div class="setting">
-      <label for="itemlist">뽑기 리스트 (한 줄에 하나씩 입력):</label>
-      <textarea id="itemlist" placeholder="예시&#10;쌀국수&#10;짬뽕&짜장"></textarea>
-      <button id="saveBtn">저장하기</button>
-      <div class="notice">저장하면 사이트를 다시 열어도 유지돼요!</div>
-    </div>
-    <div class="gacha-area" id="gachaArea">
-      <div class="gacha-machine">
-        <div class="gacha-window">
-          <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
-          <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
-          <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
-          <div class="capsule"></div><div class="capsule"></div>
-        </div>
-        <div class="gacha-lever" id="lever" title="손잡이를 돌려 뽑기!">
-          <div class="lever-dot"></div>
-        </div>
-        <div class="gacha-body"></div>
-        <div class="gacha-door"></div>
+</head>
+<body>
+  <h1>MTHD의<br>오늘의 메뉴 추천 !</h1>
+  <div class="setting">
+    <label for="itemlist">뽑기 리스트 (한 줄에 하나씩 입력):</label>
+    <textarea id="itemlist" placeholder="예시&#10;쌀국수&#10;짬뽕&짜장"></textarea>
+    <button id="saveBtn">저장하기</button>
+    <div class="notice">저장하면 사이트를 다시 열어도 유지돼요!</div>
+  </div>
+  <div class="gacha-area" id="gachaArea">
+    <div class="gacha-machine">
+      <div class="gacha-window">
+        <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
+        <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
+        <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
+        <div class="capsule"></div><div class="capsule"></div>
       </div>
-      <div class="roll-capsule" id="rollCapsule" style="display:none;">
-        <div class="capsule-hinge">
-          <div class="cap-top" id="capTop"></div>
-          <div class="cap-bottom"></div>
-        </div>
+      <div class="gacha-lever" id="lever" title="손잡이를 돌려 뽑기!">
+        <div class="lever-dot"></div>
       </div>
-      <div class="result-label" id="resultLabel"></div>
-      <div class="pang-pop" id="pangPop">팡!</div>
+      <div class="gacha-body"></div>
+      <div class="gacha-door"></div>
     </div>
-    <div class="bandai">BANDAI</div>
-    <script>
-      // --- 저장/불러오기 ---
-      const STORAGE_KEY = "__gacha_items_v2__";
-      const textarea = document.getElementById('itemlist');
-      const saveBtn = document.getElementById('saveBtn');
-      function saveList() {
-        localStorage.setItem(STORAGE_KEY, textarea.value);
+    <div class="roll-capsule" id="rollCapsule" style="display:none;">
+      <div class="capsule-hinge">
+        <div class="cap-top" id="capTop"></div>
+        <div class="cap-bottom"></div>
+      </div>
+    </div>
+    <div class="result-label" id="resultLabel"></div>
+    <div class="pang-pop" id="pangPop">팡!</div>
+  </div>
+  <div class="bandai">BANDAI</div>
+  <script>
+    // --- 저장/불러오기 ---
+    const STORAGE_KEY = "__gacha_items_v2__";
+    const textarea = document.getElementById('itemlist');
+    const saveBtn = document.getElementById('saveBtn');
+    function saveList() {
+      localStorage.setItem(STORAGE_KEY, textarea.value);
+    }
+    function loadList() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      textarea.value = saved ? saved : "";
+    }
+    saveBtn.addEventListener('click', () => {
+      saveList();
+      saveBtn.textContent = '저장됨!';
+      setTimeout(() => { saveBtn.textContent = '저장하기'; }, 1000);
+    });
+    window.addEventListener('DOMContentLoaded', loadList);
+
+    // --- 가챠 애니메이션 & 결과 & 컨페티 함수 ---
+    const lever = document.getElementById('lever');
+    const rollCapsule = document.getElementById('rollCapsule');
+    const capTop = document.getElementById('capTop');
+    const resultLabel = document.getElementById('resultLabel');
+    const pangPop = document.getElementById('pangPop');
+    const gachaArea = document.getElementById('gachaArea');
+    let isRolling = false;
+
+    function confettiBurst(centerX, centerY) {
+      const colors = [
+        "#fff275","#ff6150","#6469f9","#3ad29f","#fec0fa",
+        "#a1f7ff","#feaeae","#5bf45b","#ffdca6","#c17aff"
+      ];
+      let confs = [];
+      for (let i = 0; i < 42; i++) {
+        let conf = document.createElement('div');
+        conf.classList.add('confetti');
+        let angle = Math.random() * Math.PI * 2;
+        let dist = 80 + Math.random()*120;
+        let s = 0.8 + Math.random()*1.15;
+        conf.style.background = colors[Math.floor(Math.random()*colors.length)];
+        conf.style.left = (centerX-6) + "px";
+        conf.style.top = (centerY-12) + "px";
+        conf.style.transform = `rotate(${Math.random()*360}deg) scale(${s})`;
+        conf.animate([
+          {
+            opacity: 0.93,
+            transform: `translate(0,0) scale(${s}) rotate(${Math.random()*360}deg)`,
+          },
+          {
+            opacity: 1,
+            offset: 0.14
+          },
+          {
+            opacity: 0.85,
+            transform: `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(${s}) rotate(${Math.random()<.5?240:390}deg)`
+          },
+          {
+            opacity: 0,
+            transform: `translate(${Math.cos(angle)*dist*1.25}px,${Math.sin(angle)*dist*1.15}px) scale(${s}) rotate(${Math.random()<.5?210:540}deg)`
+          }
+        ],{
+          duration: 820 + Math.random()*580,
+          easing: 'cubic-bezier(.45,.8,.18,1)',
+          fill: 'forwards'
+        });
+        gachaArea.appendChild(conf);
+        confs.push(conf);
       }
-      function loadList() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        textarea.value = saved ? saved : "";
+      setTimeout(() => confs.forEach(c=>c.remove()), 2200);
+    }
+
+    lever.addEventListener('click', () => {
+      if (isRolling) return;
+      // 리스트 읽기
+      const items = textarea.value.split('\n').map(e => e.trim()).filter(e => e.length > 0);
+      if (items.length < 1) {
+        alert("뽑기 리스트를 입력 후 저장해주세요!");
+        return;
       }
-      saveBtn.addEventListener('click', () => {
-        saveList();
-        saveBtn.textContent = '저장됨!';
-        setTimeout(() => { saveBtn.textContent = '저장하기'; }, 1000);
-      });
-      window.addEventListener('DOMContentLoaded', loadList);
+      isRolling = true;
+      lever.classList.add('lever-spin');
+      setTimeout(() => lever.classList.remove('lever-spin'), 700);
 
-      // --- 가챠 애니메이션 & 결과 & 컨페티 함수 ---
-      const lever = document.getElementById('lever');
-      const rollCapsule = document.getElementById('rollCapsule');
-      const capTop = document.getElementById('capTop');
-      const resultLabel = document.getElementById('resultLabel');
-      const pangPop = document.getElementById('pangPop');
-      const gachaArea = document.getElementById('gachaArea');
-      let isRolling = false;
+      // 기존 효과 제거
+      rollCapsule.style.display = "none";
+      rollCapsule.className = "roll-capsule";
+      capTop.className = "cap-top";
+      resultLabel.textContent = "";
+      resultLabel.classList.remove("visible");
+      pangPop.classList.remove("visible");
 
-      function confettiBurst(centerX, centerY) {
-        const colors = [
-          "#fff275","#ff6150","#6469f9","#3ad29f","#fec0fa",
-          "#a1f7ff","#feaeae","#5bf45b","#ffdca6","#c17aff"
-        ];
-        let confs = [];
-        for (let i = 0; i < 42; i++) {
-          let conf = document.createElement('div');
-          conf.classList.add('confetti');
-          let angle = Math.random() * Math.PI * 2;
-          let dist = 80 + Math.random()*120;
-          let s = 0.8 + Math.random()*1.15;
-          conf.style.background = colors[Math.floor(Math.random()*colors.length)];
-          conf.style.left = (centerX-6) + "px";
-          conf.style.top = (centerY-12) + "px";
-          conf.style.transform = `rotate(${Math.random()*360}deg) scale(${s})`;
-          conf.animate([
-            {
-              opacity: 0.93,
-              transform: `translate(0,0) scale(${s}) rotate(${Math.random()*360}deg)`,
-            },
-            {
-              opacity: 1,
-              offset: 0.14
-            },
-            {
-              opacity: 0.85,
-              transform: `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(${s}) rotate(${Math.random()<.5?240:390}deg)`
-            },
-            {
-              opacity: 0,
-              transform: `translate(${Math.cos(angle)*dist*1.25}px,${Math.sin(angle)*dist*1.15}px) scale(${s}) rotate(${Math.random()<.5?210:540}deg)`
-            }
-          ],{
-            duration: 820 + Math.random()*580,
-            easing: 'cubic-bezier(.45,.8,.18,1)',
-            fill: 'forwards'
-          });
-          gachaArea.appendChild(conf);
-          confs.push(conf);
-        }
-        setTimeout(() => confs.forEach(c=>c.remove()), 2200);
-      }
+      // 뽑힐 항목, 랜덤 캡슐 컬러
+      const idx = Math.floor(Math.random() * items.length);
+      const resultTxt = items[idx];
+      let ballcolors = [
+        ["#ffadad","#ffd6a5"],["#caffbf","#9bf6ff"],
+        ["#bdb2ff","#ffc6ff"],["#fcf6bd","#fdffb6"],
+        ["#a0c4ff","#bdb2ff"],["#f1c0e8","#e2f0cb"]
+      ];
+      let bc = ballcolors[Math.floor(Math.random()*ballcolors.length)];
 
-      lever.addEventListener('click', () => {
-        if (isRolling) return;
-        // 리스트 읽기
-        const items = textarea.value.split('\n').map(e => e.trim()).filter(e => e.length > 0);
-        if (items.length < 1) {
-          alert("뽑기 리스트를 입력 후 저장해주세요!");
-          return;
-        }
-        isRolling = true;
-        lever.classList.add('lever-spin');
-        setTimeout(() => lever.classList.remove('lever-spin'), 700);
-
-        // 기존 효과 제거(숨김)
-        rollCapsule.style.display = "none";
-        rollCapsule.className = "roll-capsule";
-        capTop.className = "cap-top";
-        resultLabel.textContent = "";
-        resultLabel.classList.remove("visible");
-        pangPop.classList.remove("visible");
-
-        // 뽑힐 항목 + 랜덤 캡슐 컬러 선정
-        const idx = Math.floor(Math.random() * items.length);
-        const resultTxt = items[idx];
-        let ballcolors = [
-          ["#ffadad","#ffd6a5"],["#caffbf","#9bf6ff"],
-          ["#bdb2ff","#ffc6ff"],["#fcf6bd","#fdffb6"],
-          ["#a0c4ff","#bdb2ff"],["#f1c0e8","#e2f0cb"]
-        ];
-        let bc = ballcolors[Math.floor(Math.random()*ballcolors.length)];
-
-        // 굴러나오는 캡슐 준비
-        rollCapsule.style.setProperty('--ball1', bc[0]);
-        rollCapsule.style.setProperty('--ball2', bc[1]);
-        rollCapsule.style.display = "flex";
-        // 굴러오기 애니메이션
+      // 굴러나오는 캡슐 준비
+      rollCapsule.style.setProperty('--ball1', bc[0]);
+      rollCapsule.style.setProperty('--ball2', bc[1]);
+      rollCapsule.style.display = "flex";
+      // 굴러오기 애니메이션
+      setTimeout(()=>{
+        rollCapsule.className = "roll-capsule rolling";
+        // 출구로 도착 후 중앙 큰 캡슐로 변신
         setTimeout(()=>{
-          rollCapsule.className = "roll-capsule rolling";
-          // 출구로 도착 후 중앙 큰 캡슐로 변신
+          rollCapsule.className += " toward-center";
+          // 중앙에서 열리며 결과 팡! 컨페티
           setTimeout(()=>{
-            rollCapsule.className += " toward-center";
-            // 중앙에서 열리며 결과 팡! 컨페티
+            rollCapsule.className += " open";
+            capTop.classList.add('open');
+            // 중앙좌표(컨페티용)
+            let rect = rollCapsule.getBoundingClientRect();
+            let centerX = rect.left + rect.width/2 + window.scrollX;
+            let centerY = rect.top + rect.height/2 + window.scrollY;
+            // 결과 텍스트
+            resultLabel.textContent = resultTxt;
+            resultLabel.classList.add("visible");
+            pangPop.classList.add("visible");
+            confettiBurst(centerX, centerY);
+            // 2초 후 복구
             setTimeout(()=>{
-              rollCapsule.className += " open";
-              capTop.classList.add('open');
-              // 중앙좌표(컨페티용)
-              let rect = rollCapsule.getBoundingClientRect();
-              let centerX = rect.left + rect.width/2 + window.scrollX;
-              let centerY = rect.top + rect.height/2 + window.scrollY;
-              // 결과 텍스트
-              resultLabel.textContent = resultTxt;
-              resultLabel.classList.add("visible");
-              pangPop.classList.add("visible");
-              confettiBurst(centerX, centerY);
-              // 2초 후 복구
-              setTimeout(()=>{
-                rollCapsule.style.display="none";
-                resultLabel.classList.remove("visible");
-                pangPop.classList.remove("visible");
-                rollCapsule.className = "roll-capsule";
-                capTop.className = "cap-top";
-                isRolling = false;
-              },1800);
-            },900); // 열림+컨페티
-          },820); // 중앙으로 이동 후 열림
-        },140); // 레버 후 굴러나오게 딜레이
-      });
-    </script>
-  </body>
+              rollCapsule.style.display="none";
+              resultLabel.classList.remove("visible");
+              pangPop.classList.remove("visible");
+              rollCapsule.className = "roll-capsule";
+              capTop.className = "cap-top";
+              isRolling = false;
+            },1800);
+          },900); // 열림+컨페티
+        },820); // 중앙으로 이동 후 열림
+      },140); // 레버 후 굴러나오게 딜레이
+    });
+  </script>
+</body>
 </html>
