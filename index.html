@@ -2,62 +2,68 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>코드 가챠 뽑기</title>
+  <title>가챠 뽑기 (직접 입력형)</title>
   <style>
     html, body {
-      height: 100%; margin: 0; padding: 0;
+      min-height: 100vh; margin: 0; padding: 0;
       background: linear-gradient(160deg,#fff6fd,#f0e1ff 70%,#ffe5e0 100%);
-      box-sizing: border-box;
-      overflow: hidden;
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      box-sizing: border-box; overflow-x: hidden;
     }
     body {
-      height: 100vh; width: 100vw;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 100vw; min-width: 320px;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     }
-    /* 가챠 머신 전체 */
+    h1 {margin-top: 22px; margin-bottom: 6px; font-size: 2em; color: #a42553; letter-spacing: 3px; font-weight: 800;}
+    .setting {
+      width: 340px; max-width: 96vw;
+      background: #fff8;
+      border-radius: 13px;
+      box-shadow: 0 2px 16px #e6b1e955;
+      margin: 12px 0 3px 0; padding: 17px 20px 15px 20px;
+      display: flex; flex-direction: column; align-items: stretch; gap: 12px;
+    }
+    .setting label {
+      font-size: 1em; color: #823469; font-weight: bold;
+      margin-bottom: 7px;
+      letter-spacing: 1.4px;
+    }
+    .setting textarea {
+      width: 100%; min-height: 83px; padding: 8px 10px;
+      font-size: 1.07em; border-radius: 9px; border: 2px solid #dea1e5;
+      resize: vertical; outline: none;
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: #f8f6ff;
+      box-shadow: 0 1px 4px #ffe4f911;
+    }
+    .setting button {
+      align-self: flex-end;
+      font-size: 1.07em; color: #fff;
+      background: linear-gradient(90deg, #df65a5 70%, #a06be1 100%);
+      border: none; border-radius: 7px; padding: 7px 18px 6px 18px;
+      font-weight: bold; cursor: pointer; margin-top: 6px;
+      box-shadow: 0 3px 12px #efb5c533;
+      letter-spacing: 0.5px;
+      transition: background .15s;
+    }
+    .setting button:active {background: linear-gradient(90deg, #b14389 70%, #544ba9 100%);}
+    .notice {
+      color: #8a2962;
+      font-size: 0.97em;
+      margin-bottom: 2px;
+      text-align: right;
+    }
+
     .gacha-machine {
       position: relative;
-      width: 340px; 
-      height: 520px;
-      max-width: 92vw;
-      max-height: 88vh;
-      margin-top: 2vw;
-      display: flex; flex-direction: column; align-items: center;
-      z-index: 2;
+      width: 340px; max-width: 94vw; min-width:210px;
+      height: 520px; max-height: 87vh;
+      margin: 18px 0 5px 0;
+      display: block;
     }
-    /* 상자 */
-    .gacha-body {
-      position: absolute;
-      bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 270px; height: 170px;
-      background: linear-gradient(0deg,#d82d47 60%,#a11836 100%);
-      border: 6px solid #c2c2c2;
-      border-radius: 15px 15px 30px 30px/25px 25px 25px 38px;
-      box-shadow: 0 10px 30px #d3567355;
-      z-index: 2;
-      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-    }
-    .gacha-window {
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 270px; height: 285px;
-      background: linear-gradient(180deg,#fff7ff 60%,#e7f0ff 100%);
-      border: 6px solid #c2c2c2;
-      border-bottom: none;
-      border-radius: 23px 23px 68px 68px / 38px 38px 100px 100px;
-      overflow: hidden;
-      z-index: 3;
-      display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center;
-      padding-bottom: 16px;
-    }
-    /* 다양한 캡슐들 구연용 */
-    .capsule {
-      width: 44px; height: 43px;
-      margin: 2px; margin-top: 10px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 20px 15px,var(--cap1,#fae),var(--cap2,#cbf));
-      border: 2px solid #8882aa;
-      box-shadow: 0 2px 10px #c58ca644;
-    }
+    .gacha-body{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:270px;height:170px;background:linear-gradient(0deg,#d82d47 60%,#a11836 100%);border:6px solid #c2c2c2;border-radius:15px 15px 30px 30px/25px 25px 25px 38px;box-shadow:0 10px 30px #d3567355;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;}
+    .gacha-window{position:absolute;top:0;left:50%;transform:translateX(-50%);width:270px;height:285px;background:linear-gradient(180deg,#fff7ff 60%,#e7f0ff 100%);border:6px solid #c2c2c2;border-bottom:none;border-radius:23px 23px 68px 68px/38px 38px 100px 100px;overflow:hidden;z-index:3;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;padding-bottom:16px;}
+    .capsule{width:44px;height:43px;margin:2px;margin-top:10px;border-radius:50%;background:radial-gradient(circle at 20px 15px,var(--cap1,#fae),var(--cap2,#cbf));border:2px solid #8882aa;box-shadow:0 2px 10px #c58ca644;}
     .capsule:nth-child(1){--cap1:#fec;--cap2:#fcc;}
     .capsule:nth-child(2){--cap1:#9fd;--cap2:#3df;}
     .capsule:nth-child(3){--cap1:#cbe;--cap2:#f9f;}
@@ -67,129 +73,34 @@
     .capsule:nth-child(7){--cap1:#fdc;--cap2:#fac;}
     .capsule:nth-child(8){--cap1:#acf;--cap2:#bfe;}
     .capsule:nth-child(9){--cap1:#f8f;--cap2:#c8f;}
-    /* 기계 앞쪽 레버 */
-    .gacha-lever {
-      position: absolute;
-      left: 50%; bottom: 115px;
-      transform: translateX(-50%);
-      z-index: 10;
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(160deg,#eee,#bbb 70%);
-      border: 3.2px solid #888;
-      box-shadow: 0 4px 10px #ad2d5319;
-      display: flex;align-items: center;justify-content: center;
-      cursor: pointer;
-      transition: box-shadow .12s;
-    }
-    .gacha-lever:active, .lever-spin {
-      box-shadow: 0 2px 24px #83005a90;
-      animation: leverAnime .69s cubic-bezier(.61,2,.27,1) 1;
-    }
-    @keyframes leverAnime {
-      0%{ transform: translateX(-50%) rotate(0);}
-      15%{transform: translateX(-50%) rotate(-35deg);}
-      53%{transform: translateX(-50%) rotate(50deg);}
-      100%{ transform: translateX(-50%) rotate(0);}
-    }
-    .lever-dot {
-      width: 36px; height: 36px;
-      background: radial-gradient(circle at 75% 22%,#f25 70%,#8b1 100%);
-      border-radius: 50%;
-      border: 2px solid #ab2828;
-      box-shadow: 0 1px 6px #e8939b;
-    }
-    /* 출구 */
-    .gacha-door {
-      position: absolute;
-      left: 72%; bottom: 12px;
-      width: 44px; height: 38px;
-      background: linear-gradient(140deg,#fff 80%,#eee 95%);
-      border: 2.5px solid #acacac;
-      border-radius: 11px 12px 7px 12px/15px 25px 24px 17px;
-      box-shadow: 0 0 8px #bbb6;
-      z-index: 30;
-      display: flex; align-items: flex-end; justify-content: center;
-      overflow: visible;
-    }
-    /* 튀어나오는 캡슐과 텍스트 */
-    .pop-capsule {
-      position: absolute;
-      left: 76%; bottom: 32px;
-      width: 50px; height: 50px;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 50;
-      display: flex; flex-direction: column; align-items: center;
-      transition: opacity .1s;
-    }
-    .pop-capsule.shoot {
-      animation: popcap 0.74s cubic-bezier(.49,2.2,.41,.98);
-      opacity: 1;
-    }
-    @keyframes popcap {
-      0% {opacity: 0;transform: translateY(-160px) scale(.5);}
-      58%{opacity: 1;transform: translateY(-22px) scale(1.21);}
-      80%{opacity: 1;transform: translateY(-8px) scale(1);}
-      100%{opacity: 1;transform: translateY(0) scale(1);}
-    }
-    .popball {
-      width: 50px; height: 50px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 14px 12px,var(--ball1,#fd7),var(--ball2,#f1c));
-      border: 3px solid #ae93b7;
-      box-shadow: 0 2px 10px #e4568348;
-      position: relative;
-    }
-    .poplabel {
-      margin-top: 10px; text-align: center;
-      font-size: 1.04em; font-weight: bold; color: #b11b6f;
-      background: #fffbe5;
-      border-radius: 13px;
-      padding: 6px 14px 4px 14px;
-      border: 2px solid #ffe8f8;
-      box-shadow: 0 0 10px #f2a1ea28;
-      animation: poplbl 0.39s cubic-bezier(.4,2.1,.62,.93) .61s 1 backwards;
-      opacity: 0;
-    }
-    .shoot .poplabel { opacity: 1;}
-    @keyframes poplbl {
-      0% {opacity:.2; transform: scale(0.5) translateY(25px);}
-      64% {opacity:1; transform: scale(1.18) translateY(-9px) rotate(-2deg);}
-      100% {opacity:1; transform: scale(1) translateY(0) rotate(0deg);}
-    }
-    .pang-effect {
-      position: absolute;
-      left: 50%; top: 68%; transform: translate(-50%, -30px);
-      font-size: 2.15em; color: #ff3e4d; font-weight: bold;
-      text-shadow: 1.5px 2px 0 #fff0cc, 3px 4px 12px #b1554045;
-      opacity: 0; pointer-events: none; z-index: 99;
-      letter-spacing: 2px;
-      user-select: none;
-      animation: none;
-    }
-    .pang-effect.visible {
-      opacity: 1;
-      animation: pangpopkey 0.56s cubic-bezier(.37,2.1,.42,1.02) .6s 1 backwards;
-    }
-    @keyframes pangpopkey {
-      0% { opacity: 0; scale: 0.3;}
-      60% { opacity: 1; scale: 1.28;}
-      100% { opacity: 1; scale: 1;}
-    }
-    @media (max-width: 520px) {
-      .gacha-machine {width:96vw;min-width:0;}
-      .gacha-body, .gacha-window {width:94vw; min-width:0;}
-      .gacha-body {height:24vw;min-height:94px;}
-      .gacha-window {height:36vw;}
-    }
+    .gacha-lever{position:absolute;left:50%;bottom:115px;transform:translateX(-50%);z-index:10;width:60px;height:60px;border-radius:50%;background:linear-gradient(160deg,#eee,#bbb 70%);border:3.2px solid #888;box-shadow:0 4px 10px #ad2d5319;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow .12s;}
+    .gacha-lever:active,.lever-spin{box-shadow:0 2px 24px #83005a90;animation:leverAnime .69s cubic-bezier(.61,2,.27,1) 1;}
+    @keyframes leverAnime{0%{transform:translateX(-50%) rotate(0);}15%{transform:translateX(-50%) rotate(-35deg);}53%{transform:translateX(-50%) rotate(50deg);}100%{transform:translateX(-50%) rotate(0);}}
+    .lever-dot{width:36px;height:36px;background:radial-gradient(circle at 75% 22%,#f25 70%,#8b1 100%);border-radius:50%;border:2px solid #ab2828;box-shadow:0 1px 6px #e8939b;}
+    .gacha-door{position:absolute;left:72%;bottom:12px;width:44px;height:38px;background:linear-gradient(140deg,#fff 80%,#eee 95%);border:2.5px solid #acacac;border-radius:11px 12px 7px 12px/15px 25px 24px 17px;box-shadow:0 0 8px #bbb6;z-index:30;display:flex;align-items:flex-end;justify-content:center;overflow:visible;}
+    .pop-capsule{position:absolute;left:76%;bottom:32px;width:50px;height:50px;opacity:0;pointer-events:none;z-index:50;display:flex;flex-direction:column;align-items:center;transition:opacity .1s;}
+    .pop-capsule.shoot{animation:popcap 0.74s cubic-bezier(.49,2.2,.41,.98);opacity:1;}
+    @keyframes popcap{0%{opacity:0;transform:translateY(-160px) scale(.5);}58%{opacity:1;transform:translateY(-22px) scale(1.21);}80%{opacity:1;transform:translateY(-8px) scale(1);}100%{opacity:1;transform:translateY(0) scale(1);}}
+    .popball{width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 14px 12px,var(--ball1,#fd7),var(--ball2,#f1c));border:3px solid #ae93b7;box-shadow:0 2px 10px #e4568348;position:relative;}
+    .poplabel{margin-top:10px;text-align:center;font-size:1.04em;font-weight:bold;color:#b11b6f;background:#fffbe5;border-radius:13px;padding:6px 14px 4px 14px;border:2px solid #ffe8f8;box-shadow:0 0 10px #f2a1ea28;animation:poplbl 0.39s cubic-bezier(.4,2.1,.62,.93) .61s 1 backwards;opacity:0;}
+    .shoot .poplabel{opacity:1;}
+    @keyframes poplbl{0%{opacity:.2;transform:scale(0.5) translateY(25px);}64%{opacity:1;transform:scale(1.18) translateY(-9px) rotate(-2deg);}100%{opacity:1;transform:scale(1) translateY(0) rotate(0deg);}}
+    .pang-effect{position:absolute;left:50%;top:68%;transform:translate(-50%,-30px);font-size:2.15em;color:#ff3e4d;font-weight:bold;text-shadow:1.5px 2px 0 #fff0cc, 3px 4px 12px #b1554045;opacity:0;pointer-events:none;z-index:99;letter-spacing:2px;user-select:none;animation:none;}
+    .pang-effect.visible{opacity:1;animation:pangpopkey 0.56s cubic-bezier(.37,2.1,.42,1.02) .6s 1 backwards;}
+    @keyframes pangpopkey{0%{opacity:0;scale:0.3;}60%{opacity:1;scale:1.28;}100%{opacity:1;scale:1;}}
+    @media (max-width:520px){.gacha-machine{width:96vw;min-width:0;}.gacha-body,.gacha-window{width:94vw;min-width:0;}.gacha-body{height:24vw;min-height:94px;}.gacha-window{height:36vw;}}
   </style>
 </head>
 <body>
-  <h1 style="margin-top:22px;margin-bottom:18px;font-size:2em;color:#a42553;letter-spacing:3px;font-weight:800;">가챠 랜덤 뽑기</h1>
+  <h1>가챠 뽑기</h1>
+  <div class="setting">
+    <label for="itemlist">뽑기 리스트 (한 줄에 하나씩 입력):</label>
+    <textarea id="itemlist" placeholder="예시&#10;쌀국수&#10;짬뽕&짜장"></textarea>
+    <button id="saveBtn">저장하기</button>
+    <div class="notice">저장하면 사이트를 다시 열어도 유지돼요!</div>
+  </div>
   <div class="gacha-machine">
-    <div class="gacha-window" id="gachaWindow">
-      <!-- 랜덤한 색상 캡슐 9~12개 표시 -->
+    <div class="gacha-window">
       <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
       <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
       <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
@@ -200,7 +111,7 @@
     </div>
     <div class="gacha-body"></div>
     <div class="gacha-door"></div>
-    <!-- 튀어 나오는 뽑기 결과 -->
+    <!-- 튀어나오는 뽑기 결과 -->
     <div class="pop-capsule" id="popCapsule">
       <div class="popball"></div>
       <div class="poplabel" id="popLabel"></div>
@@ -208,33 +119,28 @@
     <!-- 팡 효과 -->
     <div class="pang-effect" id="pangEff">팡!</div>
   </div>
+
   <script>
-    // ======= 뽑기 리스트 ========
-    const items = [
-      "쌀국수",
-      "짬뽕&짜장",
-      "스시&우동",
-      "텐동",
-      "하이라이스",
-      "닭곰탕",
-      "국밥",
-      "설렁탕",
-      "삼계탕",
-      "찜닭",
-      "순두부 & 직화제육",
-      "복어국",
-      "김치찜",
-      "양평해장국",
-      "부대찌개",
-      "아구찜",
-      "감자탕",
-      "등촌샤브칼국수",
-      "갈비탕",
-      "쭈꾸미",
-      "칼국수",
-      "마라탕",
-      "순대국"
-    ];
+    // --- 저장/불러오기 ---
+    const STORAGE_KEY = "__gacha_items_v1__";
+    const textarea = document.getElementById('itemlist');
+    const saveBtn = document.getElementById('saveBtn');
+
+    function saveList() {
+      localStorage.setItem(STORAGE_KEY, textarea.value);
+    }
+    function loadList() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      textarea.value = saved ? saved : "";
+    }
+    saveBtn.addEventListener('click', () => {
+      saveList();
+      saveBtn.textContent = '저장됨!';
+      setTimeout(() => {saveBtn.textContent = '저장하기';}, 1000);
+    });
+    window.addEventListener('DOMContentLoaded', loadList);
+
+    // --- 가챠 뽑기 동작 ---
     const lever = document.getElementById('lever');
     const popCapsule = document.getElementById('popCapsule');
     const popLabel = document.getElementById('popLabel');
@@ -242,26 +148,25 @@
     const popBall = popCapsule.querySelector('.popball');
     let isRolling = false;
 
-    // 뽑기 이벤트
     lever.addEventListener('click', () => {
       if(isRolling) return;
+      // 리스트 읽기: 줄 단위, 공백 및 빈줄 제거
+      const items = textarea.value.split('\n').map(e => e.trim()).filter(e=>e.length>0);
+      if (items.length < 1) {
+        alert("뽑기 리스트를 입력 후 저장해주세요!");
+        return;
+      }
       isRolling = true;
-
-      // 레버 SPIN 효과 (애니메이션 트리거)
       lever.classList.add('lever-spin');
-
-      // 팡/캡슐 숨기기
       popCapsule.classList.remove('shoot');
       pangEff.classList.remove('visible');
-
-      // 애니 타이밍 + 랜덤 항목 준비
       setTimeout(() => {
         lever.classList.remove('lever-spin');
         // 랜덤 결과
         const idx = Math.floor(Math.random()*items.length);
         popLabel.textContent = items[idx];
 
-        // 캡슐 색상 랜덤
+        // 캡슐 컬러 랜덤
         let ballcolors = [
           ["#ffadad","#ffd6a5"],["#caffbf","#9bf6ff"],
           ["#bdb2ff","#ffc6ff"],["#fcf6bd","#fdffb6"],
@@ -271,12 +176,10 @@
         popBall.style.setProperty('--ball1', bc[0]);
         popBall.style.setProperty('--ball2', bc[1]);
 
-        // 뽑기 캡슐 팡팡 팡!
         popCapsule.classList.add('shoot');
         pangEff.classList.add('visible');
-        // 롤링 반복못하게 잠깐 막기
         setTimeout(()=>{ isRolling = false; },1200);
-      },550); // 레버 스핀 후 캡슐 떨어짐
+      },550);
     });
   </script>
 </body>
